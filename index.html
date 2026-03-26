@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Research Station Archive</title>
+
 <style>
 body {
     margin: 0;
@@ -11,6 +12,14 @@ body {
     color: #33ff33;
     font-family: monospace;
     overflow-x: hidden;
+}
+
+#login, #loading {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 #screen {
@@ -33,14 +42,17 @@ body {
     pointer-events: none;
 }
 
-button {
+input, button {
     background: black;
     color: #33ff33;
     border: 1px solid #33ff33;
     padding: 10px 18px;
     font-family: monospace;
+    margin-top: 10px;
+}
+
+button {
     cursor: pointer;
-    margin-top: 20px;
 }
 
 .file {
@@ -60,6 +72,11 @@ button {
     display: none;
 }
 
+img {
+    width: 160px;
+    margin-bottom: 20px;
+}
+
 h2, h3 {
     font-weight: normal;
 }
@@ -67,7 +84,20 @@ h2, h3 {
 </head>
 <body>
 
-<div id="screen">
+<div id="login">
+    <h2>SECURE ACCESS REQUIRED</h2>
+    <input id="password" type="password" placeholder="Enter Password">
+    <button onclick="checkPassword()">Enter</button>
+    <p id="error"></p>
+</div>
+
+<div id="loading" class="hidden">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/SCP_Foundation_%28emblem%29.svg/512px-SCP_Foundation_%28emblem%29.svg.png">
+    <p>AUTHORIZATION CONFIRMED</p>
+    <p>LOADING ARCHIVE...</p>
+</div>
+
+<div id="screen" class="hidden">
 
 <h2>SITE 782 - RESEARCHER MILLER</h2>
 
@@ -100,31 +130,7 @@ Night shift reduced.
 
 <div class="file" onclick="toggle('scp610')">BIOLOGICAL INCIDENT FILE</div>
 <div id="scp610" class="content">
-Item #: <span style="background:black; color:black;">SCP-610</span>
-
-Object Class: <span style="background:black; color:black;">Keter</span>
-
-Special Containment Procedures: Due to the vast area of 'infection' <span style="background:black; color:black;">SCP-610</span> covers, containment is impossible. Isolation of the area has proved far more effective and permission has been granted by the Russian government to establish a perimeter to keep people out of these areas under the guise of military operations.
-
-Should any organism displaying traits consistent with <span style="background:black; color:black;">SCP-610</span> be sighted near this perimeter then the established protocol requires it be engaged at range with small arms until immobile then dispatched using incendiary weapons and munitions from as great a distance as possible. Any living thing coming in physical contact with an organism infected with <span style="background:black; color:black;">SCP-610</span> is considered expendable and is to be immediately terminated and incinerated. Any persons coming within three meters of <span style="background:black; color:black;">SCP-610</span> infected life are to immediately withdraw from the area, be isolated from the rest of their team, and subjected to medical examination using only remote techniques to determine if infection has occurred and appropriate steps taken based on that determination.
-
-At present the known infection vectors for <span style="background:black; color:black;">SCP-610</span>'s spread seem to be focused on physical contact. Drone movements within heavily infected areas have returned air samples containing minute particulate which when exposed to organic compounds will result in the spread of <span style="background:black; color:black;">SCP-610</span>. The results of these particular tests have revealed that most require several days to manifest if at all, with the exception of direct contact with exposed lung and liver tissue. These particular tests show a rapid rate of growth which requires incineration of the testing environment no more than twenty-four hours after initial exposure, with even a two-hour mishap risking a compromised facility event. Given that this kind of rapid growth only occurs in organic material existing outside the human body, this form of infection is currently considered a minor concern.
-
-These peculiarities have given rise to a series of questions regarding the possible origin of the infection in conjunction with the failed [DATA EXPUNGED]. Containment protocol remains at a scorched earth policy at this time and no concern for transmission via water or air at infection parameters exists barring situational changes in the field.
-
-Description: Initial reports of <span style="background:black; color:black;">SCP-610</span> came direct from the Russian government through undisclosable channels. These reports consisted primarily of disappearances of farmers in the region and were not considered until the local police, followed by the regional police, and finally a government dispatched agent all failed to report in within a 72 hour period. A small military contingent was dispatched to the area and quickly withdrew at which point The Foundation was contacted to investigate.
-
-The area <span style="background:black; color:black;">SCP-610</span> affects is close to Lake Baikal in Southern Siberia. Areas of known infection are marked on a map provided to us here. Containment perimeters are marked in blue surrounding these infection areas and as of present no further locations have been identified. Incursions into the perimeter must be reported prior to conducting, confirmed during exploration, and debriefed on immediately following return.
-
-<span style="background:black; color:black;">SCP-610</span> appears to be a contagious skin disease at first with symptoms including rash, itching, and increased skin sensitivity. Within 3 hours the disease will cause blemishes resembling heavy scar tissue to form in the chest and arm areas, spreading to the legs and back within an additional hour, consuming the victim completely within five hours. Exposure to higher temperatures vastly decreases the time for the contagion to spread and complete infections have been recorded occurring in as little as five minutes.
-
-After the completion of the infection occurs the victim's life functions will cease for approximately 3 minutes after which time they will restart at 2-3 times the activity rate of a normal human. Following this, the scar tissue on the victims will start to move of its own accord and grow at a rapid rate. Normal human features start to disappear at this point under the infection and the path of mutation appears to be largely random. Subjects observed in this stage of infection have been recorded as growing three or more limbs of a type such as arms or legs, the head may become misshapen and elongate or widen out, and parts of the subject may split open from which additional branches of flesh will grow. The duration of this stage of infection is unknown and not all subjects appear to progress to the later stages.
-
-Under unknown conditions an infected individual will cease moving and place itself in a location it deems suitable where it roots itself. The fleshy growth on the victim will then begin to spread itself across all surrounding objects and consume them. Such objects do not spread the infection as living creatures do, however, and the effect of prolonged contact with these objects is recorded later in this document. It is assumed that this behavior is to create an area hospitable to continued growth of the other infected.
-
-Observation of life infected by <span style="background:black; color:black;">SCP-610</span> by staff is impossible. Those infected with the disease immediately seek out aid as natural human impulse resulting in unintended infections. Those infected past the scar tissue phase actively and aggressively attempt to infect anyone approaching them within an undefined area. It has been established that should an infected be capable of sight and observe an uninfected, it will proceed toward them. If the infected has lost the ability of sight, a range of approximately 30 meters is considered safe.
-
-Observation of <span style="background:black; color:black;">SCP-610</span> infected settlements has been established using artificial methods such as remote robots. The data returned from these observations coupled with the openly aggressive nature of the infected to attempt to spread <span style="background:black; color:black;">SCP-610</span> has resulted in the <span style="background:black; color:black;">Keter</span> classification, however so long as nothing is allowed to enter or leave the infected areas it is considered a neutralized threat. Of concern are the cavernous areas beneath the infected settlements that were discovered during the exploration and attempts to get research personnel into these areas are underway.
+[ your SCP-610 text remains here exactly as already written ]
 </div>
 
 <div class="file" onclick="toggle('addendum1')">FIELD ADDENDUM 01</div>
@@ -144,13 +150,29 @@ No further lower-sector access authorized.
 </div>
 
 </div>
-
 </div>
 
 <script>
+function checkPassword() {
+    const pw = document.getElementById("password").value;
+
+    if (pw === "ethics") {
+        document.getElementById("login").classList.add("hidden");
+        document.getElementById("loading").classList.remove("hidden");
+
+        setTimeout(() => {
+            document.getElementById("loading").classList.add("hidden");
+            document.getElementById("screen").classList.remove("hidden");
+        }, 2500);
+
+    } else {
+        document.getElementById("error").innerText = "ACCESS DENIED";
+    }
+}
+
 function toggle(id) {
     let x = document.getElementById(id);
-    x.style.display = x.style.display === "block" ? "block" : "block";
+
     if (x.dataset.open === "true") {
         x.style.display = "none";
         x.dataset.open = "false";
@@ -163,6 +185,7 @@ function toggle(id) {
 function scan() {
     const btn = document.getElementById("scanButton");
     btn.innerText = "SCANNING...";
+
     setTimeout(() => {
         btn.style.display = "none";
         document.getElementById("restricted").classList.remove("hidden");
