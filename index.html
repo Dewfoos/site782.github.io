@@ -3,155 +3,148 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vault Terminal</title>
+<title>Research Station Archive</title>
 <style>
 body {
     margin: 0;
     background: black;
     color: #33ff33;
     font-family: monospace;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 #screen {
     padding: 20px;
-    height: 100vh;
-    box-sizing: border-box;
+    min-height: 100vh;
     position: relative;
 }
 
-#output {
-    white-space: pre-wrap;
-    line-height: 1.4;
-}
-
-#input-line {
-    display: flex;
-    margin-top: 10px;
-}
-
-#prompt {
-    margin-right: 8px;
-}
-
-#command {
-    background: transparent;
-    border: none;
-    color: #33ff33;
-    font-family: monospace;
-    font-size: 1rem;
-    outline: none;
-    width: 100%;
-}
-
-.scanlines::before {
+#screen::before {
     content: "";
-    position: absolute;
+    position: fixed;
     inset: 0;
     background: repeating-linear-gradient(
         to bottom,
-        rgba(0,255,0,0.05),
-        rgba(0,255,0,0.05) 1px,
+        rgba(0,255,0,0.04),
+        rgba(0,255,0,0.04) 1px,
         transparent 1px,
         transparent 3px
     );
     pointer-events: none;
 }
 
-.flicker {
-    animation: flicker 0.12s infinite;
+button {
+    background: black;
+    color: #33ff33;
+    border: 1px solid #33ff33;
+    padding: 10px 18px;
+    font-family: monospace;
+    cursor: pointer;
+    margin-top: 20px;
 }
 
-@keyframes flicker {
-    0% { opacity: 1; }
-    50% { opacity: 0.96; }
-    100% { opacity: 1; }
+.file {
+    cursor: pointer;
+    margin: 8px 0;
+}
+
+.content {
+    display: none;
+    margin-left: 20px;
+    white-space: pre-wrap;
+    border-left: 1px solid #33ff33;
+    padding-left: 10px;
+}
+
+.hidden {
+    display: none;
+}
+
+h2, h3 {
+    font-weight: normal;
 }
 </style>
 </head>
 <body>
-<div id="screen" class="scanlines flicker">
-    <div id="output"></div>
-    <div id="input-line">
-        <span id="prompt">></span>
-        <input id="command" autofocus />
-    </div>
+
+<div id="screen">
+
+<h2>POLAR RESEARCH TERMINAL</h2>
+
+<div class="file" onclick="toggle('logistics')">LOGISTICS_REPORT_03</div>
+<div id="logistics" class="content">
+Freight convoy delayed by weather.
+Fuel reserve currently at 63%.
+South generator shipment expected in 4 days.
+</div>
+
+<div class="file" onclick="toggle('maintenance')">MAINTENANCE_NOTICE_12</div>
+<div id="maintenance" class="content">
+Generator 2 voltage instability persists.
+Lower vent corridor remains inaccessible.
+Thermal duct inspection incomplete.
+</div>
+
+<div class="file" onclick="toggle('personnel')">PERSONNEL_ROTATION</div>
+<div id="personnel" class="content">
+Two departures delayed.
+One transfer pending medical review.
+Night shift reduced.
+</div>
+
+<button id="scanButton" onclick="scan()">Initiate Retinal Scan</button>
+
+<div id="restricted" class="hidden">
+
+<h3>RETINAL MATCH CONFIRMED</h3>
+
+<div class="file" onclick="toggle('scp610')">BIOLOGICAL INCIDENT FILE</div>
+<div id="scp610" class="content">
+[ Paste SCP-610 main file here ]
+</div>
+
+<div class="file" onclick="toggle('addendum1')">FIELD ADDENDUM 01</div>
+<div id="addendum1" class="content">
+[ Paste addendum text here ]
+</div>
+
+<div class="file" onclick="toggle('addendum2')">FIELD ADDENDUM 02</div>
+<div id="addendum2" class="content">
+[ Paste additional addendum here ]
+</div>
+
+<div class="file" onclick="toggle('annex')">ANNEX RECORD</div>
+<div id="annex" class="content">
+Recovered material sealed pending further review.
+No further lower-sector access authorized.
+</div>
+
+</div>
+
 </div>
 
 <script>
-const output = document.getElementById("output");
-const commandInput = document.getElementById("command");
-
-const files = {
-    help: `AVAILABLE COMMANDS:
-HELP
-DIR
-OPEN LOG1
-OPEN LOG2
-CLEAR`,
-    
-    dir: `DIRECTORY:
-LOG1.TXT
-LOG2.TXT
-SYSTEM_STATUS`,
-
-    log1: `ENTRY 01:
-Power fluctuation detected in lower maintenance corridor.
-Cause unknown.`,
-
-    log2: `ENTRY 02:
-Audio recorded at 03:14 contains unidentified voice.
-Transcript unavailable.`,
-
-    system_status: `SYSTEM STATUS:
-REACTOR: NOMINAL
-SECURITY: PARTIAL FAILURE`
-};
-
-function print(text) {
-    output.innerHTML += text + "\n";
-    window.scrollTo(0, document.body.scrollHeight);
-}
-
-function bootSequence() {
-    const boot = [
-        "ROBCO INDUSTRIES UNIFIED OPERATING SYSTEM",
-        "COPYRIGHT 2075 ROBCO INDUSTRIES",
-        "",
-        "VAULT-TEC INTERNAL TERMINAL",
-        "INITIALIZING..."
-    ];
-
-    let i = 0;
-    const interval = setInterval(() => {
-        if (i < boot.length) {
-            print(boot[i]);
-            i++;
-        } else {
-            clearInterval(interval);
-            print("\nTYPE HELP");
-        }
-    }, 500);
-}
-
-commandInput.addEventListener("keydown", function(e) {
-    if (e.key === "Enter") {
-        const cmd = commandInput.value.trim().toLowerCase();
-        print("> " + commandInput.value);
-
-        if (cmd === "help") print(files.help);
-        else if (cmd === "dir") print(files.dir);
-        else if (cmd === "open log1") print(files.log1);
-        else if (cmd === "open log2") print(files.log2);
-        else if (cmd === "open system_status") print(files.system_status);
-        else if (cmd === "clear") output.innerHTML = "";
-        else print("COMMAND NOT RECOGNIZED");
-
-        commandInput.value = "";
+function toggle(id) {
+    let x = document.getElementById(id);
+    x.style.display = x.style.display === "block" ? "block" : "block";
+    if (x.dataset.open === "true") {
+        x.style.display = "none";
+        x.dataset.open = "false";
+    } else {
+        x.style.display = "block";
+        x.dataset.open = "true";
     }
-});
+}
 
-bootSequence();
+function scan() {
+    const btn = document.getElementById("scanButton");
+    btn.innerText = "SCANNING...";
+    setTimeout(() => {
+        btn.style.display = "none";
+        document.getElementById("restricted").classList.remove("hidden");
+    }, 1800);
+}
 </script>
+
 </body>
 </html>
