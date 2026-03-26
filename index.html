@@ -72,11 +72,6 @@ button {
     display: none;
 }
 
-img {
-    width: 160px;
-    margin-bottom: 20px;
-}
-
 h2, h3 {
     font-weight: normal;
 }
@@ -92,9 +87,8 @@ h2, h3 {
 </div>
 
 <div id="loading" class="hidden">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/SCP_Foundation_%28emblem%29.svg/512px-SCP_Foundation_%28emblem%29.svg.png">
-    <p>AUTHORIZATION CONFIRMED</p>
-    <p>LOADING ARCHIVE...</p>
+    <p id="load1" class="hidden">AUTHORIZATION CONFIRMED</p>
+    <p id="load2" class="hidden">LOADING ARCHIVE...</p>
 </div>
 
 <div id="screen" class="hidden">
@@ -130,7 +124,7 @@ Night shift reduced.
 
 <div class="file" onclick="toggle('scp610')">BIOLOGICAL INCIDENT FILE</div>
 <div id="scp610" class="content">
-[ your SCP-610 text remains here exactly as already written ]
+[ paste your SCP-610 content here ]
 </div>
 
 <div class="file" onclick="toggle('addendum1')">FIELD ADDENDUM 01</div>
@@ -161,6 +155,14 @@ function checkPassword() {
         document.getElementById("loading").classList.remove("hidden");
 
         setTimeout(() => {
+            document.getElementById("load1").classList.remove("hidden");
+        }, 300);
+
+        setTimeout(() => {
+            document.getElementById("load2").classList.remove("hidden");
+        }, 1000);
+
+        setTimeout(() => {
             document.getElementById("loading").classList.add("hidden");
             document.getElementById("screen").classList.remove("hidden");
         }, 2500);
@@ -173,12 +175,10 @@ function checkPassword() {
 function toggle(id) {
     let x = document.getElementById(id);
 
-    if (x.dataset.open === "true") {
+    if (x.style.display === "block") {
         x.style.display = "none";
-        x.dataset.open = "false";
     } else {
         x.style.display = "block";
-        x.dataset.open = "true";
     }
 }
 
