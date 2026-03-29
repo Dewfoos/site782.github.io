@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Research Station Archive</title>
+<title>Research Station Personal Archive</title>
 <style>
 body {
     margin: 0;
@@ -176,9 +176,9 @@ On ██/██/2026, SCP-232168 breached containment for 27 minutes. Surveilla
 MTF Gamma-13 disabled with use of anti-armor ordinance and localized energy surges into the machine using civilian infrastructure. Constant high amp electricity is sufficient to prevent self-repair.
 </div></div>
 
-<div class="file" onclick="triggerEthicsDelivery()">ETHICS DELIVERY</div>
-<div id="annex" class="content">YOU ARE NOT MILLER.</div>
-
+<div class="file hidden" id="ethicsDelivery" onclick="triggerEthicsDelivery()">ETHICS DELIVERY</div>
+<div id="annex" class="content">
+YOU ARE NOT MILLER.
 </div>
 </div>
 
@@ -232,6 +232,18 @@ function scan() {
     setTimeout(() => {
         btn.style.display = "none";
         document.getElementById("restricted").classList.remove("hidden");
+    }, 1800);
+}
+    function scan() {
+    const btn = document.getElementById("scanButton");
+    btn.innerText = "SCANNING...";
+
+    setTimeout(() => {
+        btn.style.display = "none";
+        document.getElementById("restricted").classList.remove("hidden");
+
+        // Reveal Ethics Delivery button after scan
+        document.getElementById("ethicsDelivery").classList.remove("hidden");
     }, 1800);
 }
 
