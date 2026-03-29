@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Research Station Archive</title>
-
 <style>
 body {
     margin: 0;
@@ -13,7 +12,6 @@ body {
     font-family: monospace;
     overflow-x: hidden;
 }
-
 #login, #loading {
     min-height: 100vh;
     display: flex;
@@ -21,13 +19,11 @@ body {
     justify-content: center;
     align-items: center;
 }
-
 #screen {
     padding: 20px;
     min-height: 100vh;
     position: relative;
 }
-
 #screen::before {
     content: "";
     position: fixed;
@@ -41,7 +37,6 @@ body {
     );
     pointer-events: none;
 }
-
 input, button {
     background: black;
     color: #33ff33;
@@ -50,16 +45,8 @@ input, button {
     font-family: monospace;
     margin-top: 10px;
 }
-
-button {
-    cursor: pointer;
-}
-
-.file {
-    cursor: pointer;
-    margin: 8px 0;
-}
-
+button { cursor: pointer; }
+.file { cursor: pointer; margin: 8px 0; }
 .content {
     display: none;
     margin-left: 20px;
@@ -67,13 +54,25 @@ button {
     border-left: 1px solid #33ff33;
     padding-left: 10px;
 }
+.hidden { display: none; }
+h2, h3 { font-weight: normal; }
 
-.hidden {
+/* Full-screen overlay for SCP 2521 message */
+#scpOverlay {
+    position: fixed;
+    inset: 0;
+    background: black;
+    color: #33ff33;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: monospace;
+    font-size: 1.5rem;
+    text-align: center;
+    white-space: pre;
+    z-index: 9999;
     display: none;
-}
-
-h2, h3 {
-    font-weight: normal;
 }
 </style>
 </head>
@@ -92,39 +91,30 @@ h2, h3 {
 </div>
 
 <div id="screen" class="hidden">
-
 <h2>SITE 782 - RESEARCHER MILLER</h2>
 
 <div class="file" onclick="toggle('logistics')">LOGISTICS_REPORT_03</div>
 <div id="logistics" class="content">
-Freight convoy delayed by weather.
-Fuel reserve currently at 63%.
-South generator shipment expected in 4 days.
+Freight convoy delayed by weather. Fuel reserve currently at 63%. South generator shipment expected in 4 days. Site Contaiment Procedures, Relaxed. 95% of Subjects Offsite.
 </div>
 
 <div class="file" onclick="toggle('maintenance')">MAINTENANCE_NOTICE_12</div>
 <div id="maintenance" class="content">
-Generator 2 voltage instability persists.
-Lower vent corridor remains inaccessible.
-Thermal duct inspection incomplete.
+Generator 2 voltage instability persists. Lower vent corridor remains inaccessible. Thermal duct inspection incomplete.
 </div>
 
 <div class="file" onclick="toggle('personnel')">PERSONNEL_ROTATION</div>
 <div id="personnel" class="content">
-Two departures delayed.
-One transfer pending medical review.
-Night shift reduced.
+Two departures delayed. One transfer pending medical review. Night shift reduced.
 </div>
 
 <button id="scanButton" onclick="scan()">Initiate Retinal Scan</button>
 
 <div id="restricted" class="hidden">
-
 <h3>RETINAL MATCH CONFIRMED - DISPLAYING MTOS</h3>
 
 <div class="file" onclick="toggle('scp610')">BIOLOGICAL INCIDENT FILE</div>
-<div id="scp610" class="content">
-Item #: SCP-610
+<div id="scp610" class="content">Item #: SCP-610
 
 Object Class: Keter
 
@@ -148,18 +138,14 @@ Under unknown conditions an infected individual will cease moving and place itse
 
 Observation of life infected by SCP-610 by staff is impossible. Those infected with the disease immediately seek out aid as natural human impulse resulting in unintended infections. Those infected past the scar tissue phase actively and aggressively attempt to infect anyone approaching them within an undefined area. It has been established that should an infected be capable of sight and observe an uninfected, it will proceed toward them. If the infected has lost the ability of sight, a range of approximately 30 meters is considered safe.
 
-Observation of SCP-610 infected settlements has been established using artificial methods such as remote robots. The data returned from these observations coupled with the openly aggressive nature of the infected to attempt to spread SCP-610 has resulted in the Keter classification, however so long as nothing is allowed to enter or leave the infected areas it is considered a neutralized threat. Of concern are the cavernous areas beneath the infected settlements that were discovered during the exploration and attempts to get research personnel into these areas are underway.
-</div>
+Observation of SCP-610 infected settlements has been established using artificial methods such as remote robots. The data returned from these observations coupled with the openly aggressive nature of the infected to attempt to spread SCP-610 has resulted in the Keter classification, however so long as nothing is allowed to enter or leave the infected areas it is considered a neutralized threat. Of concern are the cavernous areas beneath the infected settlements that were discovered during the exploration and attempts to get research personnel into these areas are underway.</div>
 
 <div class="file" onclick="toggle('addendum1')">BIOLOGICAL ADDENDUM 01</div>
-<div id="addendum1" class="content">
-Termination of original sources of SCP-610 Infection have been obliterated in the Irkutsker Oblast, samples recovered have been placed within Heavy Containment.
-Samples have been prepared for movement as per order of Site 782 Head.
-</div>
+<div id="addendum1" class="content">Termination of original sources of SCP-610 Infection have been obliterated in the Irkutsker Oblast, samples recovered have been placed within Heavy Containment.
+Samples have been prepared for movement as per order of Site 782 Head.</div>
 
 <div class="file" onclick="toggle('addendum2')">BROKEN MACHINE</div>
-<div id="addendum2" class="content">
-Item #: SCP-232168
+<div id="addendum2" class="content">Item #: SCP-232168
 
 Object Class: Keter
 
@@ -188,37 +174,48 @@ SCP-232168 was first observed in [REDACTED] following reports of widespread dest
 Addendum 232168-B — Containment Breach Incident:
 On ██/██/2026, SCP-232168 breached containment for 27 minutes. Surveillance footage shows it running at high speed, using hydraulic limbs to destroy barriers. Analysis indicates intelligence comparable to a human tactical officer despite its fully mechanical, non-humanoid brain structure.
 MTF Gamma-13 disabled with use of anti-armor ordinance and localized energy surges into the machine using civilian infrastructure. Constant high amp electricity is sufficient to prevent self-repair.
-</div>
+</div></div>
 
-<div class="file" onclick="toggle('annex')">ETHICS DELIVERY</div>
-<div id="annex" class="content">
-YOU ARE NOT MILLER.
-</div>
+<div class="file" onclick="triggerEthicsDelivery()">ETHICS DELIVERY</div>
+<div id="annex" class="content">YOU ARE NOT MILLER.</div>
 
 </div>
+</div>
+
+<!-- SCP 2521 Overlay -->
+<div id="scpOverlay">
+<pre>
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠀⠀⠀⠀⠀⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⡇⠀⠀⢰⡆⢘⣆⠀⠀⡆⠀⢸⠀⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⠀⣆⣧⡤⠾⢷⡚⠛⢻⣏⢹⡏⠉⣹⠟⡟⣾⠳⣼⢦⣀⣰⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠰⣄⡬⢷⣝⢯⣷⢤⣘⣿⣦⣼⣿⣾⣷⣼⣽⣽⣿⣯⡾⢃⣠⣞⠟⠓⢦⣀⠆⠀⠀⡀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠲⣄⣤⣞⡉⠛⢶⣾⡷⠟⣿⣿⣿⣿⣿⣿⣿⡿⣿⣿⣿⡿⢿⡛⠻⠿⣥⣤⣶⠞⠉⢓⣤⡴⢁⠄⠀⠀⠀⠀⠀
+⠀⠀⠀⣄⣠⠞⠉⢛⣻⡿⠛⠁⠀⣸⠯⠈⠀⠁⣴⣿⣿⣿⡶⠤⠽⣇⠈⣿⠀⠀⠈⠙⠻⢶⣾⣻⣭⠿⢫⣀⣴⡶⠃⠀⠀
+⠀⢤⣀⣜⣉⣩⣽⠿⠋⠀⠀⠀⠀⣿⠈⠀⠀⢸⣿⣿⣿⣿⣀⠀⠀⠸⠇⢸⡇⠀⠀⠀⠀⠀⠘⠛⢶⣶⣾⣻⡯⠄⠀⣠⠄
+⠀⠤⠬⢭⣿⣿⠋⠀⠀⠀⠀⠀⠀⢻⡀⠀⠀⠀⢿⣿⣿⣿⡿⠋⠁⠀⠀⣼⠁⠀⠀⠀⠀⠀⢀⣴⣫⣏⣙⠛⠒⠚⠋⠁⠀
+⡔⢀⡵⠋⢧⢹⡀⠀⠀⠀⠀⠀⠀⠈⢷⡀⠀⠀⠀⠈⠉⠉⠀⠀⠀⠀⣰⠏⠀⠀⠀⠀⠀⣠⣾⣿⡛⠛⠛⠓⠦⠀⠀⠀⠀
+⣇⠘⠳⠦⠼⠧⠷⣄⣀⠀⠀⠀⠀⠀⠀⠳⢤⣀⠀⠀⠀⠀⠀⢀⣠⠾⠃⠀⠀⠀⣀⣴⣻⣟⡋⠉⠉⢻⠶⠀⠀⠀⠀⠀⠀
+⠈⠑⠒⠒⠀⠀⢄⣀⡴⣯⣵⣖⣦⠤⣀⣀⣀⠉⠙⠒⠒⠒⠚⠉⢁⣀⣠⢤⣖⣿⣷⢯⡉⠉⠙⣲⠞⠁⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠈⠙⠣⢤⡞⠉⢉⡿⠒⢻⢿⡿⠭⣭⡭⠿⣿⡿⠒⠻⣯⡷⡄⠉⠳⣬⠷⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⠺⠤⣄⣠⡏⠀⠀⡿⠀⠀⠘⡾⠀⢀⣈⡧⠴⠒⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠉⠙⠒⠓⠒⠒⠚⠛⠉⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+</pre>
+<h2>●●|●●●●●|●●|● DATA INJECTED</h2>
 </div>
 
 <script>
 function checkPassword() {
     const pw = document.getElementById("password").value;
-
     if (pw === "ethics") {
         document.getElementById("login").classList.add("hidden");
         document.getElementById("loading").classList.remove("hidden");
 
-        setTimeout(() => {
-            document.getElementById("load1").classList.remove("hidden");
-        }, 300);
-
-        setTimeout(() => {
-            document.getElementById("load2").classList.remove("hidden");
-        }, 1000);
-
+        setTimeout(() => { document.getElementById("load1").classList.remove("hidden"); }, 300);
+        setTimeout(() => { document.getElementById("load2").classList.remove("hidden"); }, 1000);
         setTimeout(() => {
             document.getElementById("loading").classList.add("hidden");
             document.getElementById("screen").classList.remove("hidden");
         }, 2500);
-
     } else {
         document.getElementById("error").innerText = "ACCESS DENIED";
     }
@@ -226,22 +223,33 @@ function checkPassword() {
 
 function toggle(id) {
     let x = document.getElementById(id);
-
-    if (x.style.display === "block") {
-        x.style.display = "none";
-    } else {
-        x.style.display = "block";
-    }
+    x.style.display = (x.style.display === "block") ? "none" : "block";
 }
 
 function scan() {
     const btn = document.getElementById("scanButton");
     btn.innerText = "SCANNING...";
-
     setTimeout(() => {
         btn.style.display = "none";
         document.getElementById("restricted").classList.remove("hidden");
     }, 1800);
+}
+
+// ETHICS DELIVERY sequence
+function triggerEthicsDelivery() {
+    // Start invisible 5s timer
+    setTimeout(() => {
+        // Show SCP 2521 message overlay
+        const overlay = document.getElementById("scpOverlay");
+        overlay.style.display = "flex";
+
+        // After 30s, switch to black screen
+        setTimeout(() => {
+            overlay.style.display = "none";
+            document.body.style.background = "black";
+            document.body.innerHTML = ""; // clears all content
+        }, 30000); // 30 seconds
+    }, 5000); // 5 second invisible timer
 }
 </script>
 
